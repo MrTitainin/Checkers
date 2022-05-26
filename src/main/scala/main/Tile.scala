@@ -30,8 +30,12 @@ object Tile{
   def apply(num:Int,checker:Option[Checker]) = new Tile(num,checker,State.tileStart(num).pipe(p=>new Rectangle2D.Double(p.x,p.y,tileSize,tileSize)),neighbours(num))
   def from(i:Int,dir:Dir) = (dir.x+x(i),dir.y+y(i)).pipe( c=> if(c._1>=0 && c._1<Game.boardLength && c._2>=0 && c._2<Game.boardLength) Some(pos(c._1,c._2)) else None)
   def neighbours(i:Int) = List(LT->from(i,LT),LB->from(i,LB),RT->from(i,RT),RB->from(i,RB)).filter(_._2.isDefined).map(c=>(c._1.asInstanceOf[Dir],c._2.get)).toMap
-  def dir(from:Tile,to:Int) = from.neighbours.find(d => d._2==to).get._1
-  def furtherTile(i:Tile,through:Int) = from(through,dir(i,through)).get
+  def dir(from:Tile,to:Int) = from.neighbours.find(d => d._2==to).getOrElse((null,0))._1
+  def furtherTile(i:Tile,through:Int) = dir(i, through) match {
+    case null => None
+    case x => Some(from(through,x).get)
+  }
+
 
 
   sealed abstract class Dir(val x:Int, val y:Int){

@@ -62,14 +62,13 @@ object State {
   val startingState:State = {
     val whiteStartingPos = List(40,42,44,46,49,51,53,55,56,58,60,62)
     val blackStartingPos = List(1,3,5,7,8,10,12,14,17,19,21,23)
+    /*val whiteStartingPos = List(55) // long-distance multi-hit test
+    val blackStartingPos = List(28,33)*/
     def checker(i:Int) =
       if(whiteStartingPos.contains(i)) Checker(i,false,Checker.WHITE).some
       else if (blackStartingPos.contains(i)) Checker(i,false,Checker.BLACK).some else None
     val board = Seq.range(0,boardSize).map(i=>Tile(i,checker(i)))
+    //State(board.updated(55,board(55).place(board(55).checker.get.promote())),true,0) // long-distance multi-hit test
     State(board,true,0)
-  }
-
-  def evaluate(s:State) = {
-
   }
 }

@@ -1,7 +1,7 @@
 package main
 
 import main.Move._
-import main.State.Board
+import main.State.{Board, pos, x, y}
 import main.Tile._
 
 import java.awt.Graphics2D
@@ -19,7 +19,15 @@ case class Move(origin:Checker, first:Int, hits:Int, stt: ()=>State) {
   def isHit = hits > 0
   def isComplex = hits > 1
 
-  def complexFirstStep(s:State) = if(!isComplex) throw new IllegalStateException("First step of non-complex move") else furtherTile(s.board(origin.i),first).pipe(i => s.halfHit(i,hit(origin.i,first,i,s.board)).pipe(ns => (ns,ns.board(i).checker))) //TODO queen
+  def complexFirstStep(s:State) =
+    if(!isComplex) throw new IllegalStateException("First step of non-complex move")
+    else (furtherTile(s.board(origin.i),first) match{
+      case None => // queen long-distance hit fix
+        val diff = (x(first)-x(origin.i),y(first)-y(origin.i))
+        val fieldLen = Math.abs(diff._1)
+        pos(x(first)+diff._1/fieldLen,y(first)+diff._2/fieldLen)
+      case Some(i) => i // normal hit
+    }).pipe(i=>s.halfHit(i,hit(origin.i,first,i,s.board)).pipe(ns => (ns,ns.board(i).checker)))
 
   def draw(g:Graphics2D) = g.drawImage(if(isMove) moveMark else if(isComplex) complexMark else hitMark, drawOrigin.x, drawOrigin.y, null)
 }

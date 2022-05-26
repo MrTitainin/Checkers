@@ -29,10 +29,10 @@ object Game extends App {
   def pit(a1: AIAlgorithm,a2:AIAlgorithm) = {
 
   }
-  //new Game()
+  new Game()
   //new Game(p2 = new RandomAI)
   //new Game(p2 = Human)
   //new Game(p2 = new AlphaBeta(10))
   //new Game(new MinMax(6),new RandomAI,true)
-  new Game(new AlphaBeta(10),new MinMax(5),true,true)
+  //new Game(new AlphaBeta(10),new MinMax(5),true,true)
 }

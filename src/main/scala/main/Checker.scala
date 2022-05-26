@@ -30,10 +30,10 @@ case class Checker(i:Int, isQueen:Boolean, colour:CheckerColour) {
   implicit def some = Some(this)
 }
 object Checker{
-  val whitePawn:BufferedImage = ImageIO.read(new File("res/whitePawn.png"))
-  val whiteQueen:BufferedImage = ImageIO.read(new File("res/whiteQueen.png"))
-  val blackPawn:BufferedImage = ImageIO.read(new File("res/blackPawn.png"))
-  val blackQueen:BufferedImage = ImageIO.read(new File("res/blackQueen.png"))
+  val whitePawn:BufferedImage = Lib.getImage("whitePawn.png")
+  val whiteQueen:BufferedImage = Lib.getImage("whiteQueen.png")
+  val blackPawn:BufferedImage = Lib.getImage("blackPawn.png")
+  val blackQueen:BufferedImage = Lib.getImage("blackQueen.png")
 
   val promotionWhite = 0
   val promotionBlack = Game.boardLength-1

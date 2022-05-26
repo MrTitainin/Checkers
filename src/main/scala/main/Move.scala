@@ -95,9 +95,9 @@ object Move {
       else exploreMove(c.i, LB) ::: exploreMove(c.i, RB) ::: checkHit(c.i, RT) ::: checkHit(c.i, LT)
   }
 
-  val moveMark:BufferedImage = ImageIO.read(new File("res/move.png"))
-  val hitMark:BufferedImage = ImageIO.read(new File("res/hit.png"))
-  val complexMark:BufferedImage = ImageIO.read(new File("res/complex.png"))
+  val moveMark:BufferedImage = Lib.getImage("move.png")
+  val hitMark:BufferedImage = Lib.getImage("hit.png")
+  val complexMark:BufferedImage = Lib.getImage("complex.png")
 
   val statesCache = mutable.WeakHashMap[State,State]()
   def stateCached(s:State) = statesCache.getOrElseUpdate(s,s)

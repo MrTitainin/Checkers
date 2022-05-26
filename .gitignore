@@ -45,3 +45,4 @@ Checkers.zip
 #general
 *.class
 out/*
+*.jar

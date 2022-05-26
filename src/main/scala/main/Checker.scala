@@ -11,7 +11,7 @@ case class Checker(i:Int, isQueen:Boolean, colour:CheckerColour) {
   var pos:Point = State.tileStart(i)
 
   def draw(g:Graphics2D): Unit = g.drawImage(img,pos.x,pos.y,null)
-  def drawHint(g:Graphics2D): Unit = g.drawImage(Move.hitMark,pos.x,pos.y,null)
+  def drawHint(g:Graphics2D): Unit = g.drawImage(Move.moveMark,pos.x,pos.y,null)
 
   def isWhite = colour == WHITE
   def isBlack = colour == BLACK

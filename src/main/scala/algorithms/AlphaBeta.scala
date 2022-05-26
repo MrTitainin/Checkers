@@ -1,6 +1,7 @@
 package algorithms
 
-import algorithms.MinMax._
+import algorithms.AlphaBeta.defaultDepth
+import algorithms.MinMax.{drawValue, loseValue, simpleValue, winValue}
 import main.{AIAlgorithm, Move, State}
 
 import scala.annotation.tailrec
@@ -19,9 +20,9 @@ class AlphaBeta(val maxDepth:Int=defaultDepth) extends AIAlgorithm {
     else if(depth > 0) {
       if(s.whiteMove){
         var alpha = ialpha
-        var mv = Integer.MIN_VALUE
+        //var mv = Integer.MIN_VALUE
         var cmax:Move = s.moves.head
-        @tailrec def maximize(mvs:List[Move]=s.moves.toList):Move = if(mvs==Nil) cmax else{
+        @tailrec def maximize(mvs:List[Move]=s.moves):Move = if(mvs==Nil) cmax else{
           val v = evaluate(mvs.head.result,depth-1,alpha,ibeta)._1
           if(v>alpha){
             alpha = v
@@ -35,7 +36,7 @@ class AlphaBeta(val maxDepth:Int=defaultDepth) extends AIAlgorithm {
       }
       else {
         var beta = ibeta
-        var mv = Integer.MAX_VALUE
+        //var mv = Integer.MAX_VALUE
         var cmin:Move = s.moves.head
         @tailrec def minimize(mvs:List[Move]=s.moves.toList):Move = if(mvs==Nil) cmin else{
           val v = evaluate(mvs.head.result,depth-1,ialpha,beta)._1
@@ -63,5 +64,8 @@ class AlphaBeta(val maxDepth:Int=defaultDepth) extends AIAlgorithm {
   override def winRate: Double = ???
 
   override def gameEnded(win: Boolean, moves: Int): Unit = ???
+}
+object AlphaBeta{
+  val defaultDepth = 8
 }
 

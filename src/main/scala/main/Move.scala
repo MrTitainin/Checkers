@@ -19,7 +19,7 @@ case class Move(origin:Checker, first:Int, hits:Int, stt: ()=>State) {
   def isHit = hits > 0
   def isComplex = hits > 1
 
-  def complexFirstStep(s:State) = if(!isComplex) throw new IllegalStateException("First step of non-complex move") else furtherTile(s.board(origin.i),first).pipe(i => s.halfHit(i,hit(origin.i,first,i,s.board)).pipe(ns => (ns,ns.board(i).checker)))
+  def complexFirstStep(s:State) = if(!isComplex) throw new IllegalStateException("First step of non-complex move") else furtherTile(s.board(origin.i),first).pipe(i => s.halfHit(i,hit(origin.i,first,i,s.board)).pipe(ns => (ns,ns.board(i).checker))) //TODO queen
 
   def draw(g:Graphics2D) = g.drawImage(if(isMove) moveMark else if(isComplex) complexMark else hitMark, drawOrigin.x, drawOrigin.y, null)
 }
@@ -27,13 +27,13 @@ object Move {
   def apply(c:Checker)(implicit s:State): List[Move] = {
 
     def generalMove(i: Int, dir:Dir, board:Board)(empty:Int=>List[Move])(hit:(Int,Int)=>List[Move]):List[Move] = {
-      board(i).neighbours.get(dir) match {
+      board(i).neighbours.get(dir) match { //does any tile exist in that direction
         case Some(target) =>
-          board(target).checker match {
+          board(target).checker match { // does this tile have any piece
             case Some(checker) =>
-              if(s.whiteMove != checker.isWhite) // enemy piece
-                board(target).neighbours.get(dir) match {
-                  case Some(goal) => board(goal).checker match {
+              if(s.whiteMove != checker.isWhite) // is piece enemy's
+                board(target).neighbours.get(dir) match { //does any tile exist in that direction
+                  case Some(goal) => board(goal).checker match { // is there any piece on it
                     case Some(_) => List() // blocked by piece
                     case None => hit(target,goal)
                   }

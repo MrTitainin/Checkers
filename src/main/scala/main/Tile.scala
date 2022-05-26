@@ -19,6 +19,10 @@ case class Tile(num:Int,checker:Option[Checker],img:Rectangle2D,neighbours:Map[D
     g.fill(img)
     checker.foreach(_.draw(g))
   }
+  def drawNumber(g:Graphics2D) = {
+    g.drawString(s"$num",img.getMinX.toInt,img.getMinY.toInt+UI.padding)
+    checker.foreach(_.draw(g))
+  }
 
   lazy val isBlack = (State.x(num)+State.y(num))%2 == 1
 }

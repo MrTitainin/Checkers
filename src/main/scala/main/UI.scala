@@ -10,7 +10,7 @@ class UI(p1:Player, p2:Player) extends MainFrame {
   val canvas = new Canvas(p1=p1,p2=p2)
 
   val buttonLine = new BoxPanel(Orientation.Horizontal) {
-    contents += UI.FancyButton("New main.Game") { newGame() }
+    contents += UI.FancyButton("New Game") { newGame() }
     /*contents += Swing.HGlue
     contents += main.Canvas.timer*/
     contents += Swing.HGlue
@@ -29,6 +29,7 @@ class UI(p1:Player, p2:Player) extends MainFrame {
   contents = mainPanel
 
   def newGame(): Unit = {
+    canvas.moves = 0
     canvas.state = State.startingState.copy()
     repaint()
   }

@@ -1,0 +1,7 @@
+alg,winrate,winmoves,movetime
+MinMax(3),1.0,42,6270364
+MinMax(5),1.0,47,47965591
+AlphaBeta(3),1.0,39,356250
+AlphaBeta(5),1.0,41,2786198
+AlphaBeta(8),1.0,46,62971600
+AlphaBeta(10),1.0,42,597637715

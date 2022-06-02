@@ -1,0 +1,4 @@
+alg,winrate,winmoves,movetime
+AlphaBeta(8;simple value),0.975,46,30519184
+AlphaBeta(8;advanced preference),0.0,0,116909882
+AlphaBeta(8;center preference),0.525,45,63246849

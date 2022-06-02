@@ -12,7 +12,8 @@ import scala.collection.mutable
 import scala.util.chaining.scalaUtilChainingOps
 
 case class Move(origin:Checker, first:Int, hits:Int, stt: ()=>State) {
-  lazy val result = stateCached(stt())
+  //lazy val result = stateCached(stt())
+  lazy val result = stt()
   lazy val drawOrigin = State.tileStart(first)
 
   def isMove = hits == 0
@@ -100,7 +101,7 @@ object Move {
   val complexMark:BufferedImage = Lib.getImage("complex.png")
 
   val statesCache = mutable.WeakHashMap[State,State]()
-  def stateCached(s:State) = statesCache.getOrElseUpdate(s,s)
+  def stateCached(s:State): State = statesCache.getOrElseUpdate(s,s)
 
   def hit(from:Int, by:Int, to:Int, board: Board):Board =
     move(from,to,board)
@@ -113,7 +114,7 @@ object Move {
   def moveFinal(from:Int, to:Int, board: Board):Board =
     tryPromotion(to,move(from, to, board)) // remove from 'by'
 
-  def tryPromotion(i:Int, board: Board) = {
+  def tryPromotion(i:Int, board: Board): Board = {
     val c = board(i).checker.get
     if(c.isPromotable) board.updated(i,board(i).place(c.promote()))
     else board

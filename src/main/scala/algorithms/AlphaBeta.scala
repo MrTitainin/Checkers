@@ -1,16 +1,23 @@
 package algorithms
 
 import algorithms.AlphaBeta.defaultDepth
-import algorithms.MinMax.{drawValue, loseValue, simpleValue, winValue}
-import main.{AIAlgorithm, Move, State}
+import main.AIAlgorithm._
+import main.{AIAlgorithm, EvaluateHeuristic, Move, State}
 
 import scala.annotation.tailrec
 
-class AlphaBeta(val maxDepth:Int=defaultDepth) extends AIAlgorithm {
+case class AlphaBeta(maxDepth:Int=defaultDepth, evaluate: EvaluateHeuristic = EvaluateHeuristic.simple) extends AIAlgorithm {
+
   override def makeMove(s: State): State = {
-    evaluate(s)._2.result
+    val init = System.nanoTime()
+    val result = searchTree(s)._2.result
+    val end = System.nanoTime()
+    totalMoves += 1
+    timeSum += end-init
+    result
   }
-  def evaluate(s:State, depth:Int=maxDepth, ialpha:Int = Integer.MIN_VALUE, ibeta:Int = Integer.MAX_VALUE):(Int,Move) = {
+
+  def searchTree(s:State, depth:Int=maxDepth, ialpha:Int = Integer.MIN_VALUE, ibeta:Int = Integer.MAX_VALUE):(Int,Move) = {
     var best:Move = null
     s.value = if(s.lost){
       if(s.whiteMove) loseValue
@@ -23,7 +30,7 @@ class AlphaBeta(val maxDepth:Int=defaultDepth) extends AIAlgorithm {
         //var mv = Integer.MIN_VALUE
         var cmax:Move = s.moves.head
         @tailrec def maximize(mvs:List[Move]=s.moves):Move = if(mvs==Nil) cmax else{
-          val v = evaluate(mvs.head.result,depth-1,alpha,ibeta)._1
+          val v = searchTree(mvs.head.result,depth-1,alpha,ibeta)._1
           if(v>alpha){
             alpha = v
             cmax = mvs.head
@@ -39,7 +46,7 @@ class AlphaBeta(val maxDepth:Int=defaultDepth) extends AIAlgorithm {
         //var mv = Integer.MAX_VALUE
         var cmin:Move = s.moves.head
         @tailrec def minimize(mvs:List[Move]=s.moves.toList):Move = if(mvs==Nil) cmin else{
-          val v = evaluate(mvs.head.result,depth-1,ialpha,beta)._1
+          val v = searchTree(mvs.head.result,depth-1,ialpha,beta)._1
           if(v<beta){
             beta = v
             cmin = mvs.head
@@ -52,18 +59,10 @@ class AlphaBeta(val maxDepth:Int=defaultDepth) extends AIAlgorithm {
       }
     }
     else{
-      simpleValue(s)
+      evaluate(s)
     }
     (s.value,best)
   }
-
-  override def avgWinMoves: Int = ???
-
-  override def avgMoveTime: Long = ???
-
-  override def winRate: Double = ???
-
-  override def gameEnded(win: Boolean, moves: Int): Unit = ???
 }
 object AlphaBeta{
   val defaultDepth = 8
